@@ -21,6 +21,9 @@ export default async function AdminOrdersPage() {
                 <p dir="ltr" className="text-end text-sm text-ink-faint">
                   {order.customer_phone}
                 </p>
+                <p className="text-sm text-ink-faint">
+                  {order.customer_state} — {order.customer_village}
+                </p>
               </div>
               <span className="rounded-full bg-paper-raised px-3 py-1 text-xs">
                 {order.status}

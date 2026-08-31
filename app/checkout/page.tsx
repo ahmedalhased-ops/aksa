@@ -12,6 +12,8 @@ export default function CheckoutPage() {
   const [lines, setLines] = useState<CartLine[]>([]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [state, setStateVal] = useState("");
+  const [village, setVillage] = useState("");
   const [note, setNote] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -31,6 +33,8 @@ export default function CheckoutPage() {
       body: JSON.stringify({
         customerName: name,
         customerPhone: phone,
+        customerState: state,
+        customerVillage: village,
         customerNote: note,
         items: lines.map((l) => ({ variantId: l.variantId, quantity: l.quantity })),
       }),
@@ -49,7 +53,7 @@ export default function CheckoutPage() {
       .join("\n");
     const message = `مرحبًا، أرغب بتأكيد طلب #${data.orderId.slice(0, 8)}:\n${summary}\nالإجمالي: ${cartTotal(
       lines
-    ).toFixed(2)} ر.ع\nالاسم: ${name}\nالهاتف: ${phone}`;
+    ).toFixed(2)} ر.ع\nالاسم: ${name}\nالهاتف: ${phone}\nالولاية: ${state}\nالقرية: ${village}`;
 
     clearCart();
     window.location.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
@@ -85,6 +89,26 @@ export default function CheckoutPage() {
             onChange={(e) => setPhone(e.target.value)}
             placeholder="968XXXXXXXX"
             className="w-full rounded border border-ink/15 bg-paper-raised px-3 py-2.5 text-end outline-none focus:border-gold"
+          />
+        </div>
+        <div>
+          <label className="mb-1 block text-sm">الولاية</label>
+          <input
+            required
+            value={state}
+            onChange={(e) => setStateVal(e.target.value)}
+            placeholder="مثال: بوشر"
+            className="w-full rounded border border-ink/15 bg-paper-raised px-3 py-2.5 outline-none focus:border-gold"
+          />
+        </div>
+        <div>
+          <label className="mb-1 block text-sm">القرية / الحي</label>
+          <input
+            required
+            value={village}
+            onChange={(e) => setVillage(e.target.value)}
+            placeholder="مثال: المعبيلة"
+            className="w-full rounded border border-ink/15 bg-paper-raised px-3 py-2.5 outline-none focus:border-gold"
           />
         </div>
         <div>

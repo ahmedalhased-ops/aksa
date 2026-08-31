@@ -88,6 +88,8 @@ create table if not exists orders (
   id uuid primary key default gen_random_uuid(),
   customer_name text not null,
   customer_phone text not null,
+  customer_state text not null default '',
+  customer_village text not null default '',
   customer_note text,
   status text not null default 'pending'
     check (status in ('pending', 'confirmed', 'delivered', 'cancelled')),
@@ -117,7 +119,9 @@ create or replace function place_order(
   p_customer_name text,
   p_customer_phone text,
   p_customer_note text,
-  p_items jsonb -- [{ "variant_id": "...", "quantity": 2 }, ...]
+  p_items jsonb, -- [{ "variant_id": "...", "quantity": 2 }, ...]
+  p_customer_state text default '',
+  p_customer_village text default ''
 )
 returns uuid
 language plpgsql
@@ -141,8 +145,8 @@ begin
   order by id
   for update;
 
-  insert into orders (customer_name, customer_phone, customer_note, total)
-  values (p_customer_name, p_customer_phone, p_customer_note, 0)
+  insert into orders (customer_name, customer_phone, customer_state, customer_village, customer_note, total)
+  values (p_customer_name, p_customer_phone, p_customer_state, p_customer_village, p_customer_note, 0)
   returning id into v_order_id;
 
   for v_item in select * from jsonb_array_elements(p_items)

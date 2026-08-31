@@ -7,15 +7,20 @@ import { createServiceSupabase } from "@/lib/supabase/server";
 // lower price or a quantity beyond real stock.
 export async function POST(request: Request) {
   const body = await request.json();
-  const { customerName, customerPhone, customerNote, items } = body as {
+  const { customerName, customerPhone, customerState, customerVillage, customerNote, items } = body as {
     customerName: string;
     customerPhone: string;
+    customerState: string;
+    customerVillage: string;
     customerNote?: string;
     items: { variantId: string; quantity: number }[];
   };
 
   if (!customerName?.trim() || !customerPhone?.trim()) {
     return NextResponse.json({ error: "الاسم ورقم الهاتف مطلوبان" }, { status: 400 });
+  }
+  if (!customerState?.trim() || !customerVillage?.trim()) {
+    return NextResponse.json({ error: "الولاية والقرية مطلوبتان" }, { status: 400 });
   }
   if (!items?.length) {
     return NextResponse.json({ error: "السلة فارغة" }, { status: 400 });
@@ -26,6 +31,8 @@ export async function POST(request: Request) {
   const { data: orderId, error } = await supabase.rpc("place_order", {
     p_customer_name: customerName.trim(),
     p_customer_phone: customerPhone.trim(),
+    p_customer_state: customerState.trim(),
+    p_customer_village: customerVillage.trim(),
     p_customer_note: customerNote?.trim() || null,
     p_items: items.map((i) => ({ variant_id: i.variantId, quantity: i.quantity })),
   });
