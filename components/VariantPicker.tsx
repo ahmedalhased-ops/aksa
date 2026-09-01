@@ -49,7 +49,7 @@ export default function VariantPicker({ product }: { product: Product }) {
     <div className="space-y-6">
       <div className="relative aspect-square w-full overflow-hidden rounded-sm bg-paper-raised">
         {selected.image_url ? (
-          <Image src={selected.image_url} alt={`${product.name} — ${selected.color}`} fill className="object-cover" />
+          <Image src={selected.image_url} alt={`${product.name} — ${selected.color}`} fill quality={95} className="object-cover" />
         ) : (
           <div className="flex h-full items-center justify-center text-ink-faint">لا توجد صورة</div>
         )}
