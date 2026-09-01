@@ -5,6 +5,7 @@ import Image from "next/image";
 import type { Product, ProductVariant } from "@/lib/types";
 import StockBadge from "@/components/StockBadge";
 import { addToCart } from "@/lib/cart";
+import { getFallbackProductImage } from "@/lib/product-images";
 
 export default function VariantPicker({ product }: { product: Product }) {
   const variants = product.variants ?? [];
@@ -22,6 +23,7 @@ export default function VariantPicker({ product }: { product: Product }) {
   }
 
   const outOfStock = selected.stock <= 0;
+  const imageUrl = selected.image_url ?? getFallbackProductImage(product.slug);
 
   function selectVariant(v: ProductVariant) {
     setSelectedId(v.id);
@@ -39,7 +41,7 @@ export default function VariantPicker({ product }: { product: Product }) {
       color: selected.color,
       price: selected.price,
       quantity: qty,
-      imageUrl: selected.image_url,
+      imageUrl,
       maxStock: selected.stock,
     });
     setJustAdded(true);
@@ -48,8 +50,8 @@ export default function VariantPicker({ product }: { product: Product }) {
   return (
     <div className="space-y-6">
       <div className="relative aspect-square w-full overflow-hidden rounded-sm bg-paper-raised">
-        {selected.image_url ? (
-          <Image src={selected.image_url} alt={`${product.name} — ${selected.color}`} fill quality={95} className="object-cover" />
+        {imageUrl ? (
+          <Image src={imageUrl} alt={`${product.name} — ${selected.color}`} fill quality={95} className="object-cover" />
         ) : (
           <div className="flex h-full items-center justify-center text-ink-faint">لا توجد صورة</div>
         )}

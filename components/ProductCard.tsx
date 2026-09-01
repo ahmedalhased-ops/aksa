@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Product } from "@/lib/types";
+import { getFallbackProductImage } from "@/lib/product-images";
 import StockBadge from "@/components/StockBadge";
 
 export default function ProductCard({ product }: { product: Product }) {
@@ -9,7 +10,10 @@ export default function ProductCard({ product }: { product: Product }) {
     (min, v) => (v.price < min.price ? v : min),
     variants[0]
   );
-  const cover = cheapest?.image_url ?? product.images?.[0]?.url;
+  const cover =
+    cheapest?.image_url ??
+    product.images?.[0]?.url ??
+    getFallbackProductImage(product.slug);
   const colorCount = variants.length;
 
   return (
