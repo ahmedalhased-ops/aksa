@@ -36,7 +36,7 @@ export default async function HomePage() {
         />
 
         <p className="hero-rise mx-auto mt-5 max-w-md text-ink-soft" style={delay(750)}>
-          ساعات وشنط وإكسسوارات أصلية من أرقى الماركات العالمية، توصلك أينما كنت في عُمان.
+          ساعات وشنط وإكسسوارات أصلية من أرقى الماركات العالمية، تصلك أينما كنت.
         </p>
 
         <div className="hero-rise mt-8 flex justify-center gap-4" style={delay(900)}>
