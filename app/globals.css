@@ -102,6 +102,38 @@ body {
   animation: gold-sweep 1100ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Gold hairline that draws itself beneath the headline. */
+@keyframes hairline {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.hairline-draw {
+  transform: scaleX(0);
+  transform-origin: center;
+  animation: hairline 1100ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+/* The brand wall: an endless, unhurried procession of the houses we
+   carry. Track holds the list twice so the loop is seamless. */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee {
+  direction: ltr; /* Latin brand names read left→right; keeps the math simple */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 70s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
 /* ---------------------------------------------------------------------
    "Added to bag" moment (Cartier-inspired): the panel glides in, the
    cart badge gives one soft pulse, the button draws a checkmark.
@@ -170,6 +202,13 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hairline-draw {
+    animation: none !important;
+    transform: scaleX(1) !important;
+  }
+  .marquee-track {
+    animation: none !important;
+  }
   .hero-rise,
   .reveal,
   .bag-panel,
