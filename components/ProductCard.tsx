@@ -19,7 +19,7 @@ export default function ProductCard({ product }: { product: Product }) {
   return (
     <Link
       href={`/product/${product.slug}`}
-      className="group block overflow-hidden rounded-sm border border-ink/10 bg-paper-raised transition-shadow hover:shadow-lg"
+      className="group block overflow-hidden rounded-sm border border-ink/10 bg-paper-raised transition-all duration-500 hover:-translate-y-1 hover:border-gold-soft/60 hover:shadow-[0_18px_40px_-20px_rgba(156,122,53,0.45)]"
     >
       <div className="relative aspect-[4/5] w-full overflow-hidden bg-paper">
         {cover ? (
@@ -29,7 +29,7 @@ export default function ProductCard({ product }: { product: Product }) {
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
             quality={95}
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
           />
         ) : (
           <div className="flex h-full items-center justify-center text-ink-faint">

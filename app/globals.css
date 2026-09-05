@@ -34,3 +34,83 @@ body {
     height: 76px;
   }
 }
+
+/* ---------------------------------------------------------------------
+   Quiet, luxury-appropriate motion. Slow, deliberate, never bouncy.
+   Everything here collapses to no-motion for reduced-motion users.
+------------------------------------------------------------------------ */
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gold-sweep {
+  from {
+    transform: translateX(-120%) skewX(-12deg);
+  }
+  to {
+    transform: translateX(220%) skewX(-12deg);
+  }
+}
+
+/* Page-load entrance for the hero. Each child staggers via --delay. */
+.hero-rise {
+  opacity: 0;
+  animation: rise-in 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+/* Scroll-triggered reveal (paired with the Reveal component). */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 800ms cubic-bezier(0.16, 1, 0.3, 1), transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--delay, 0ms);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* A slow, single gold sheen that sweeps a filled button on hover —
+   restrained enough to read as polish, not a gimmick. */
+.gold-sheen {
+  position: relative;
+  overflow: hidden;
+}
+.gold-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 40%,
+    rgba(205, 173, 108, 0.55) 50%,
+    transparent 60%
+  );
+  transform: translateX(-120%) skewX(-12deg);
+  pointer-events: none;
+}
+.gold-sheen:hover::after {
+  animation: gold-sweep 1100ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise,
+  .reveal {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .gold-sheen:hover::after {
+    animation: none !important;
+  }
+}

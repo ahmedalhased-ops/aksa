@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { createServerSupabase } from "@/lib/supabase/server";
 import type { Product } from "@/lib/types";
 
@@ -53,9 +54,24 @@ export default async function AdminProductsPage() {
             </tr>
           </thead>
           <tbody>
-            {products.map((p) => (
+            {products.map((p) => {
+              const thumb = p.variants?.find((v) => v.image_url)?.image_url;
+              return (
               <tr key={p.id} className="border-b border-ink/5">
-                <td className="py-3 pe-4 font-medium">{p.name}</td>
+                <td className="py-3 pe-4 font-medium">
+                  <div className="flex items-center gap-3">
+                    <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-sm bg-paper-raised">
+                      {thumb ? (
+                        <Image src={thumb} alt={p.name} fill className="object-cover" />
+                      ) : (
+                        <div className="flex h-full items-center justify-center text-[10px] text-ink-faint">
+                          لا صورة
+                        </div>
+                      )}
+                    </div>
+                    <span>{p.name}</span>
+                  </div>
+                </td>
                 <td className="py-3 pe-4 text-ink-soft">{p.brand?.name}</td>
                 <td className="py-3 pe-4 text-ink-soft">{p.category?.name}</td>
                 <td className="py-3 pe-4 text-ink-soft">
@@ -74,7 +90,8 @@ export default async function AdminProductsPage() {
                   </Link>
                 </td>
               </tr>
-            ))}
+              );
+            })}
           </tbody>
         </table>
         {products.length === 0 && (
