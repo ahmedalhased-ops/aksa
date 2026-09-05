@@ -31,6 +31,8 @@ export function addToCart(line: CartLine) {
     lines.push(line);
   }
   writeCart(lines);
+  // Lets the global "added to bag" panel show exactly what was just added.
+  window.dispatchEvent(new CustomEvent<CartLine>("aksa-cart-added", { detail: line }));
 }
 
 export function updateQuantity(variantId: string, quantity: number) {

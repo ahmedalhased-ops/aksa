@@ -102,9 +102,78 @@ body {
   animation: gold-sweep 1100ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ---------------------------------------------------------------------
+   "Added to bag" moment (Cartier-inspired): the panel glides in, the
+   cart badge gives one soft pulse, the button draws a checkmark.
+------------------------------------------------------------------------ */
+
+/* Desktop: slide in from the inline-start edge (RTL → right side). */
+@keyframes bag-panel-in {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+/* Phones: rise from the bottom, above the fixed nav bar. */
+@keyframes bag-panel-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.bag-panel {
+  animation: bag-panel-up 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@media (min-width: 768px) {
+  .bag-panel {
+    animation-name: bag-panel-in;
+  }
+}
+
+/* Thin gold progress line that drains while the panel is open. */
+@keyframes bag-timer {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0); }
+}
+.bag-timer {
+  /* The site is RTL, so the line drains away from the right edge. */
+  transform-origin: right;
+  animation: bag-timer var(--bag-duration, 4200ms) linear forwards;
+}
+
+/* Cart badge: one soft, elastic pulse when the count goes up. */
+@keyframes badge-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+.badge-pop {
+  animation: badge-pop 520ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Checkmark that draws itself on the add-to-bag button. */
+@keyframes check-draw {
+  to { stroke-dashoffset: 0; }
+}
+.check-draw {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: check-draw 420ms cubic-bezier(0.4, 0, 0.2, 1) 120ms forwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-rise,
-  .reveal {
+  .reveal,
+  .bag-panel,
+  .badge-pop {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
@@ -112,5 +181,12 @@ body {
   }
   .gold-sheen:hover::after {
     animation: none !important;
+  }
+  .check-draw {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+  .bag-timer {
+    animation-duration: 0.01ms !important;
   }
 }

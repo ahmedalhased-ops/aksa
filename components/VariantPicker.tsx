@@ -45,6 +45,8 @@ export default function VariantPicker({ product }: { product: Product }) {
       maxStock: selected.stock,
     });
     setJustAdded(true);
+    // Let the button settle back so it can be pressed again naturally.
+    window.setTimeout(() => setJustAdded(false), 2200);
   }
 
   return (
@@ -120,9 +122,22 @@ export default function VariantPicker({ product }: { product: Product }) {
         type="button"
         onClick={handleAddToCart}
         disabled={outOfStock}
-        className="w-full rounded-sm bg-ink py-3.5 text-sm font-medium text-paper transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
+        className={`gold-sheen w-full rounded-sm py-3.5 text-sm font-medium text-paper transition-all duration-500 disabled:cursor-not-allowed disabled:opacity-40 ${
+          justAdded ? "bg-rose-deep" : "bg-ink"
+        }`}
       >
-        {outOfStock ? "نفدت الكمية" : justAdded ? "أُضيف للسلة ✓" : "أضف إلى السلة"}
+        {outOfStock ? (
+          "نفدت الكمية"
+        ) : justAdded ? (
+          <span className="inline-flex items-center justify-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path className="check-draw" d="M5 12.5l4.5 4.5L19 7.5" />
+            </svg>
+            أُضيف إلى السلة
+          </span>
+        ) : (
+          "أضف إلى السلة"
+        )}
       </button>
 
       {product.description && (
